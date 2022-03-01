@@ -4,6 +4,7 @@ SPDX-FileCopyrightText: 2019 Martin Timko
 SPDX-FileCopyrightText: 2020 Peter Marko
 SPDX-FileCopyrightText: 2020-2021 Libor Polčák
 SPDX-FileCopyrightText: 2021 Matúš Švancár
+SPDX-FileCopyrightText: 2022 Martin Bednář
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
@@ -21,12 +22,13 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	<script type="text/javascript" src="gps.js"></script>
 	<script type="text/javascript" src="xmlhttprequest.js"></script>
 	<script type="text/javascript" src="hw.js"></script>
+	<script type="text/javascript" src="arrays.js"></script>
 	<script type="text/javascript" src="enumerateDevices.js" defer></script>
 	<script language="javascript" src="iframe.js" defer></script>
 	<script language="javascript" src="poc.js" defer></script>
 	<link rel="stylesheet" type="text/css" href="global.css">
 </head>
-<body onload="initClock(); updatePerformanceLabelEvery(200); getHW();">
+<body onload="initClock(); updatePerformanceLabelEvery(200); getHW(); getArrays();">
 	<p><a href="https://polcak.github.io/jsrestrictor/">Home Page</a></p>
 	<p>You can try <a href="https://amiunique.org/">Am I Unique</a> or <a href="https://panopticlick.eff.org/">Panopticlick</a> to learn how identifiable you are on the Internet and test JavaScript Restrictor Extension</p>
 	<hr>
@@ -187,6 +189,14 @@ SPDX-License-Identifier: GPL-3.0-or-later
  	</div>
  	<br><br><br><hr>
 
+
+ 	<h2>Arrays</h2>
+ 	<div id="arrays">
+		<h3>crypto.getRandomValues:</h3>
+		<ul id="getRandomValues">
+		</ul>
+ 	</div>
+ 	<br><br><hr>
 
  	
 	<h2>navigator.geolocation example</h2>
