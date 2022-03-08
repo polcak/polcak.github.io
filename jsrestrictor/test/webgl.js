@@ -5,6 +5,28 @@
 var gl;
 var shaderTypes = ["FRAGMENT_SHADER", "VERTEX_SHADER"];
 var precisionTypes = ["LOW_FLOAT", "MEDIUM_FLOAT", "HIGH_FLOAT", "LOW_INT", "MEDIUM_INT", "HIGH_INT"];
+const FARBLEDPARAMSMAX = [
+	"MAX_VERTEX_UNIFORM_COMPONENTS",
+	"MAX_VERTEX_UNIFORM_BLOCKS",
+	"MAX_VERTEX_OUTPUT_COMPONENTS",
+	"MAX_VARYING_COMPONENTS",
+	"MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS",
+	"MAX_FRAGMENT_UNIFORM_COMPONENTS",
+	"MAX_FRAGMENT_UNIFORM_BLOCKS",
+	"MAX_FRAGMENT_INPUT_COMPONENTS",
+	"MAX_UNIFORM_BUFFER_BINDINGS",
+	"MAX_COMBINED_UNIFORM_BLOCKS",
+	"MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS",
+	"MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS",
+	"MAX_UNIFORM_BLOCK_SIZE",
+	"MAX_VERTEX_ATTRIBS",
+	"MAX_VERTEX_UNIFORM_VECTORS",
+	"MAX_VERTEX_TEXTURE_IMAGE_UNITS",
+	"MAX_TEXTURE_SIZE",
+	"MAX_CUBE_MAP_TEXTURE_SIZE",
+	"MAX_3D_TEXTURE_SIZE",
+	"MAX_ARRAY_TEXTURE_LAYERS",
+]
 
 function getShaderPrecision(gl, shaderType, precisionType) {
 	var shaderPrecision = gl.getShaderPrecisionFormat(gl[shaderType], gl[precisionType]);
@@ -48,6 +70,12 @@ function getWebGLData(gl) {
 			li.appendChild(document.createTextNode(shaderPrecision));
 			ul.appendChild(li);
 		}
+	}
+	var ul = document.getElementById('webGLFarbledMax');
+	for (param of FARBLEDPARAMSMAX) {
+		var li = document.createElement('li');
+		li.innerHTML = `${param}: ${gl.getParameter(gl[param])}`;
+		ul.appendChild(li);
 	}
 }
 
