@@ -38,15 +38,27 @@ function run_pxi_fp() {
 		context.oncomplete = function(evnt) {
 			pxi_output = "";
 			copy_output = "";
-			var channel1 = evnt.renderedBuffer.getChannelData(0);
-			evnt.renderedBuffer.copyFromChannel(channel2, 0);
-			for (var i = 4500; 5e3 > i; i++) {
-				pxi_output += channel1[i].toString() + ",";
-				copy_output += channel2[i].toString() + ",";
-			}
 
-			document.getElementById("channel_data_result").innerHTML = pxi_output.substring(0, pxi_output.length-1);
-			document.getElementById("copy_result").innerHTML = copy_output.substring(0, copy_output.length-1);
+			evnt.renderedBuffer.copyFromChannel(channel2, 0); // First, we need to copy data from the channel
+			var channel1 = evnt.renderedBuffer.getChannelData(0); // and afterwards get the buffer directly
+			function displayChannelData(channel, element, output) {
+				for (var i = 4500; 5e3 > i; i++) {
+					output += channel[i].toString() + ",";
+				}
+				element.innerHTML = output.substring(0, output.length-1);
+			}
+			// and output the data visibly
+			displayChannelData(channel1, document.getElementById("channel_data_result"), pxi_output);
+			displayChannelData(channel2, document.getElementById("copy_result"), copy_output);
+			// for integration testing, repeat
+			channel2 = new Float32Array(context.length);
+			evnt.renderedBuffer.copyFromChannel(channel2, 0);
+			channel1 = evnt.renderedBuffer.getChannelData(0);
+			pxi_output = "";
+			copy_output = "";
+			displayChannelData(channel1, document.getElementById("channel_data_result2"), pxi_output);
+			displayChannelData(channel2, document.getElementById("copy_result2"), copy_output);
+
 			pxi_compressor.disconnect();
 		}
 	} catch (u) {
