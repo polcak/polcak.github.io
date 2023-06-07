@@ -10,7 +10,7 @@ function run_pxi_fp() {
 	try {
 		if (context = new(window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 44100, 44100), !context) {
 			document.getElementById("channel_data_result").innerHTML = "OfflineAudioContext not supported";
-			pxi_output = 0;
+			pxi_output = "-";
 		}
 
 		// Create oscillator
@@ -36,17 +36,29 @@ function run_pxi_fp() {
 		context.startRendering();
 		var channel2 = new Float32Array(context.length);
 		context.oncomplete = function(evnt) {
-			pxi_output = 0;
-			copy_output = 0;
-			var channel1 = evnt.renderedBuffer.getChannelData(0);
-			evnt.renderedBuffer.copyFromChannel(channel2, 0);
-			for (var i = 4500; 5e3 > i; i++) {
-				pxi_output += Math.abs(channel1[i]);
-				copy_output += Math.abs(channel2[i]);
-			}
+			pxi_output = "";
+			copy_output = "";
 
-			document.getElementById("channel_data_result").innerHTML = pxi_output.toString();
-			document.getElementById("copy_result").innerHTML = copy_output.toString();
+			evnt.renderedBuffer.copyFromChannel(channel2, 0); // First, we need to copy data from the channel
+			var channel1 = evnt.renderedBuffer.getChannelData(0); // and afterwards get the buffer directly
+			function displayChannelData(channel, element, output) {
+				for (var i = 4500; 5e3 > i; i++) {
+					output += channel[i].toString() + ",";
+				}
+				element.innerHTML = output.substring(0, output.length-1);
+			}
+			// and output the data visibly
+			displayChannelData(channel1, document.getElementById("channel_data_result"), pxi_output);
+			displayChannelData(channel2, document.getElementById("copy_result"), copy_output);
+			// for integration testing, repeat
+			channel2 = new Float32Array(context.length);
+			evnt.renderedBuffer.copyFromChannel(channel2, 0);
+			channel1 = evnt.renderedBuffer.getChannelData(0);
+			pxi_output = "";
+			copy_output = "";
+			displayChannelData(channel1, document.getElementById("channel_data_result2"), pxi_output);
+			displayChannelData(channel2, document.getElementById("copy_result2"), copy_output);
+
 			pxi_compressor.disconnect();
 		}
 	} catch (u) {
@@ -58,6 +70,10 @@ var float_result = [];
 var byte_result = [];
 
 function run_hybrid_fp() {
+	document.getElementById("float_frequency_result").innerHTML = "";
+	document.getElementById("byte_frequency_result").innerHTML = "";
+	document.getElementById("float_time_result").innerHTML = "";
+	document.getElementById("byte_time_result").innerHTML = "";
 	var audioCtx = new(window.AudioContext || window.webkitAudioContext),
 		oscillator = audioCtx.createOscillator(),
 		analyser = audioCtx.createAnalyser(),
