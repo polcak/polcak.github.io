@@ -44,7 +44,7 @@ function updateClock() {
 
 function initClock() {
   updateClock();
-  window.setInterval("updateClock()", 1);
+  window.setInterval("updateClock()", 2000);
 }
 
 window.addEventListener("DOMContentLoaded", function () {
@@ -55,5 +55,5 @@ window.addEventListener("DOMContentLoaded", function () {
 		let currentEvent = new Event("test");
 		origEventEl.innerHTML = origEvent.timeStamp;
 		currentEventEl.innerHTML = currentEvent.timeStamp;
-  }, 100);
+  }, 2000);
 });
