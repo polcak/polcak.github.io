@@ -36,7 +36,10 @@ function updateClock() {
   document.getElementById("minutes").innerHTML = pad(minutes, 2); 
   document.getElementById("seconds").innerHTML = pad(seconds, 2);
   document.getElementById("milliseconds").innerHTML = pad(milliseconds, 3);
-  
+
+  document.getElementById("date-now-milliseconds").innerText = Date.now();
+  document.getElementById("temporal-milliseconds").innerText = Temporal.Now.instant().epochMilliseconds;
+  document.getElementById("temporal-nanoseconds").innerText = Temporal.Now.instant().epochNanoseconds;
 }
 
 function initClock() {
